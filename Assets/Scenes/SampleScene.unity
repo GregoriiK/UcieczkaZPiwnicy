@@ -619,6 +619,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   speed: 10
   camSensitivity: 1
+  jumpForce: 200
 --- !u!54 &2116346607
 Rigidbody:
   m_ObjectHideFlags: 0

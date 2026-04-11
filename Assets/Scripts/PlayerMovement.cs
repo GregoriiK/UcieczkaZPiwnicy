@@ -5,6 +5,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float speed = 10f; //zmienna z prêdkoœci¹ gracza, ustalana w edytorze - SerializeField
     [SerializeField] float camSensitivity = 1f; //zmienna z czu³oœci¹ kamery
     Camera cam; //zmienna typu Camera
+    [SerializeField]float jumpForce = 500f; //ustawienie si³y skoku
+    bool isGrounded = false;        //sprawdzenie czy gracz stan¹³ na ziemi
+    float sprintMultiplier = 1f;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -19,6 +22,28 @@ public class PlayerMovement : MonoBehaviour
     {
         OnMove(); //wywo³anie metody OnMove
         LookAround(); //Wywo³anie metody LookAround
+        Jump();
+        Sprint();
+    }
+
+    void Sprint()
+    {
+        if (Input.GetKey(KeyCode.LeftShift)) sprintMultiplier = 2;
+        else sprintMultiplier = 1;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground")) isGrounded = true; // sprawdzenie czy gracz stan¹³ na ziemi
+    }
+
+    void Jump()
+    {
+        if ( Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            rb.AddForce(Vector3.up * jumpForce);
+            isGrounded = false;
+        }
     }
 
     void OnMove() //deklaracja metody OnMove, która nic nie zwraca (void)
@@ -26,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         float z = Input.GetAxis("Vertical"); //pobiera info z klawiatury oœ x (0, 1 lub -1)
         float x = Input.GetAxis("Horizontal"); //pobiera info z klawiatury oœ y (0, 1 lub -1)
 
-        rb.linearVelocity = transform.TransformDirection(x * speed, rb.linearVelocity.y, z * speed); //nadajemy ruch graczowi (jego rb), z u¿yciem
+        rb.linearVelocity = transform.TransformDirection(x * (speed*sprintMultiplier), rb.linearVelocity.y, z * (speed*sprintMultiplier)); //nadajemy ruch graczowi (jego rb), z u¿yciem
         //metody TransformDirection, która pozwala na ruch z uwzglêdnieniem obrotu gracza
     }
 
