@@ -38,7 +38,11 @@ public class PlayerMovement : MonoBehaviour
         gameObject.transform.Rotate(0,mouseX * camSensitivity,0); //gameObject odnosi siê do objektu do którego jest pod³¹czony skrypt (Player)
                                                                   //transform odnosi siê do pozycji, rotacji i skali tego obiektu
                                                                   //Rotate jest metod¹ z Unity, która s³u¿y do obracania obiektu o podan¹ wartoœæ.
-        if (cam.transform.eulerAngles.x > 65 && cam.transform.eulerAngles.x < 295 ) Debug.Log("Warunek spe³niony"); // do dokoñczenia
+        if (cam.transform.eulerAngles.x > 65 && cam.transform.eulerAngles.x < 80 && mouseY < 0) mouseY = 0;//sprawdzenie czy patrzê za nisko i czy próbujê dalej patrzeæ w dó³
+        else if(cam.transform.eulerAngles.x <295 && cam.transform.eulerAngles.x > 280 && mouseY > 0) mouseY = 0;//sprawdzenie czy patrzê za nisko i czy próbujê dalej patrzeæ w dó³
+
+
+
         cam.transform.Rotate(-mouseY * camSensitivity,0,0); //u¿ywamy metody Rotate do obrotu kamery wokó³ osi X
        
     }
