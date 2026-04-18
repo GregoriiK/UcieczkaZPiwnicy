@@ -206,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.41, z: 0}
+  m_LocalPosition: {x: 0, y: 0.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -395,6 +395,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Factory1Floor03
       objectReference: {fileID: 0}
+    - target: {fileID: 1298158610659638, guid: 4013db2700171ec4f869921a19f36546, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4905551904120068, guid: 4013db2700171ec4f869921a19f36546, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.86
@@ -506,7 +510,7 @@ GameObject:
   - component: {fileID: 1663380605}
   m_Layer: 0
   m_Name: Floors
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

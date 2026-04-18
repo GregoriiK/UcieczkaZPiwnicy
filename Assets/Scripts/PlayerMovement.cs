@@ -8,13 +8,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]float jumpForce = 500f; //ustawienie si³y skoku
     bool isGrounded = false;        //sprawdzenie czy gracz stan¹³ na ziemi
     float sprintMultiplier = 1f;
-    
+    float sneakMultiplier = 0.4f;
+    bool isSneaking = false;
+    float cameraSneakOffset = 0.1f;
+    CapsuleCollider playerCollider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>(); //znajdowanie komponentu/w³aœciwoœci Rigidbody w obiekcie do którego jest podpiêty skrypt
         cam = Camera.main; //przypisanie g³ównej kamery na scenie (ta w graczu) do zmiennej cam
+        playerCollider = GetComponent<CapsuleCollider>();
     }
 
     // Update is called once per frame
@@ -23,26 +27,50 @@ public class PlayerMovement : MonoBehaviour
         OnMove(); //wywo³anie metody OnMove
         LookAround(); //Wywo³anie metody LookAround
         Jump();
+        Sneak();
         Sprint();
     }
 
     void Sprint()
     {
-        if (Input.GetKey(KeyCode.LeftShift)) sprintMultiplier = 2;
-        else sprintMultiplier = 1;
+        if (Input.GetKey(KeyCode.LeftShift)) sprintMultiplier = 2; //sprawdzanie czy jest wciœniêty lewy shift, jeœli tak to ustawia zmienn¹ sprintMultiplier na 2
+        else sprintMultiplier = 1; //jeœli warunek nie jest spe³niony to ustawia zmienn¹ sprint multiplier na 1
+
+        if (isSneaking) sprintMultiplier = 1;
+    }
+
+    void Sneak()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            isSneaking = !isSneaking;
+            if (isSneaking)
+            {
+                sneakMultiplier = 0.4f;
+                cam.transform.localPosition = new Vector3(0,cam.transform.localPosition.y - cameraSneakOffset,0);
+                playerCollider.height = 1;
+            }
+            else
+            {
+                sneakMultiplier = 1;
+                cam.transform.localPosition = new Vector3(0, cam.transform.localPosition.y + cameraSneakOffset, 0);
+                playerCollider.height = 2;
+            }
+        }
+
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground")) isGrounded = true; // sprawdzenie czy gracz stan¹³ na ziemi
+        if (collision.gameObject.CompareTag("Ground")) isGrounded = true; // sprawdzenie czy gracz zderzy³ siê z obiektem o tagu "Ground", ustawienie zmiennej isGrounded na true
     }
 
     void Jump()
     {
-        if ( Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if ( Input.GetKeyDown(KeyCode.Space) && isGrounded) // sprawdza czy spacja zosta³a naciœniêta i czy zmienna bool isGrounded jest prawd¹
         {
-            rb.AddForce(Vector3.up * jumpForce);
-            isGrounded = false;
+            rb.AddForce(Vector3.up * jumpForce); //jeœli prawda to "podrzuca" gracza w górê z moc¹ (jumpForce)
+            isGrounded = false;                  // i ustawia zmienn¹ isGrounded na false - uniemo¿liwia to podskakiwanie w powietrzu
         }
     }
 
@@ -51,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
         float z = Input.GetAxis("Vertical"); //pobiera info z klawiatury oœ x (0, 1 lub -1)
         float x = Input.GetAxis("Horizontal"); //pobiera info z klawiatury oœ y (0, 1 lub -1)
 
-        rb.linearVelocity = transform.TransformDirection(x * (speed*sprintMultiplier), rb.linearVelocity.y, z * (speed*sprintMultiplier)); //nadajemy ruch graczowi (jego rb), z u¿yciem
+        rb.linearVelocity = transform.TransformDirection(x * (speed*sprintMultiplier*sneakMultiplier), rb.linearVelocity.y, z * (speed*sprintMultiplier*sneakMultiplier)); //nadajemy ruch graczowi (jego rb), z u¿yciem
         //metody TransformDirection, która pozwala na ruch z uwzglêdnieniem obrotu gracza
     }
 
