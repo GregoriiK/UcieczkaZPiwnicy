@@ -7,6 +7,7 @@ public class InteractableManager : MonoBehaviour
     MeshRenderer[] components;
     void Start()
     {
+        material.SetInt("_IsActive", 0);
         components = FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None);
         foreach (var obj in components) 
         {
