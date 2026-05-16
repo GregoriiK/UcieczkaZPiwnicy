@@ -22,6 +22,14 @@ public class RayCastInteractable : MonoBehaviour
 
         if (hit.collider == null)
         {
+            if (lookingAtObject != null)
+            foreach (Material mat in lookingAtObject.GetComponent<MeshRenderer>().materials)
+            {
+                if (mat.HasFloat("_IsActive"))
+                {
+                    mat.SetInt("_IsActive", 0);
+                }
+            }
             return;
         }
 
