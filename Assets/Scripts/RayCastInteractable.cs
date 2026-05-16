@@ -1,68 +1,93 @@
+using System;
 using UnityEngine;
 
 public class RayCastInteractable : MonoBehaviour
 {
-    [SerializeField] float rayRange = 10;
-    GameObject lookingAtObject;
+    [SerializeField] private float rayRange = 10f;
 
-    private void Start()
+    private GameObject currentObject;
+
+    void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
     void Update()
     {
         CastRay();
+        if (Input.GetMouseButtonDown(0)) 
+        {
+        }
     }
 
     void CastRay()
     {
         RaycastHit hit;
-        Physics.Raycast(gameObject.transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRange);
 
-        if (hit.collider == null)
+        bool hasHit = Physics.Raycast(
+            Camera.main.transform.position,
+            Camera.main.transform.forward,
+            out hit,
+            rayRange
+        );
+
+        // Nic nie trafiono
+        if (!hasHit)
         {
-            if (lookingAtObject != null)
-            foreach (Material mat in lookingAtObject.GetComponent<MeshRenderer>().materials)
+            ClearHighlight();
+            return;
+        }
+
+        // Trafiono coœ bez tagu Interactable
+        if (!hit.collider.CompareTag("Interactable"))
+        {
+            ClearHighlight();
+            return;
+        }
+
+        GameObject hitObject = hit.collider.gameObject;
+
+        // Jeœli patrzymy na nowy obiekt
+        if (currentObject != hitObject)
+        {
+            ClearHighlight();
+
+            currentObject = hitObject;
+
+            MeshRenderer renderer = currentObject.GetComponent<MeshRenderer>();
+
+            if (renderer != null)
+            {
+                foreach (Material mat in renderer.materials)
+                {
+                    if (mat.HasFloat("_IsActive"))
+                    {
+                        mat.SetInt("_IsActive", 1);
+                    }
+                }
+            }
+        }
+    }
+
+    void ClearHighlight()
+    {
+        if (currentObject == null)
+            return;
+
+        MeshRenderer renderer = currentObject.GetComponent<MeshRenderer>();
+
+        if (renderer != null)
+        {
+            foreach (Material mat in renderer.materials)
             {
                 if (mat.HasFloat("_IsActive"))
                 {
                     mat.SetInt("_IsActive", 0);
                 }
             }
-            return;
         }
 
-        if(lookingAtObject == null)
-        {
-            lookingAtObject = hit.collider.gameObject;
-        }
-        else
-        {
-            if (lookingAtObject != hit.collider.gameObject) 
-            {   
-                foreach (Material mat in lookingAtObject.GetComponent<MeshRenderer>().materials)
-                {
-                    if (mat.HasFloat("_IsActive"))
-                    {
-                        mat.SetInt("_IsActive", 0);
-                    }
-                }
-            }
-            if (!hit.collider.CompareTag("Interactable"))
-            {
-                return;
-            }
-            Material[] mats = hit.collider.GetComponent<MeshRenderer>().materials;
-            foreach (Material mat in mats) 
-            {
-                if (mat.HasFloat("_IsActive"))
-                {
-                    mat.SetInt("_IsActive", 1);
-                }            
-            }
-
-        }
-        lookingAtObject = hit.collider.gameObject;        
+        currentObject = null;
     }
 }

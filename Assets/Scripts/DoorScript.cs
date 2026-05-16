@@ -1,16 +1,19 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class DoorScript : MonoBehaviour
+public class DoorScript : IInteractable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    bool isOpen = false;
+    GameObject gameObject;
+    public void OnInteract()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (!isOpen)
+        {
+            this.gameObject.transform.Rotate(0, 90, 0);
+        }
+        else
+        {
+            this.gameObject.transform.Rotate(0, -90, 0);
+        }
     }
 }
