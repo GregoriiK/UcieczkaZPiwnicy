@@ -1,19 +1,28 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DoorScript : IInteractable
+public class DoorScript : MonoBehaviour, IInteractable
 {
     bool isOpen = false;
-    GameObject gameObject;
-    public void OnInteract()
+    Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+    public void Interact()
     {
         if (!isOpen)
         {
-            this.gameObject.transform.Rotate(0, 90, 0);
+            animator.SetBool("isOpen", true);
+            //gameObject.transform.Rotate(0, 90, 0);
+            isOpen = true;
         }
         else
         {
-            this.gameObject.transform.Rotate(0, -90, 0);
+            animator.SetBool("isOpen", false);
+            //gameObject.transform.Rotate(0, -90, 0);
+            isOpen = false;
         }
     }
 }

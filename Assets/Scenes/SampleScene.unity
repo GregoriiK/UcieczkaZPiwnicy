@@ -178,7 +178,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -926,6 +926,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Barrel01_1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: c5fdf194e3a0c184d862ed90db5c3f15, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c5fdf194e3a0c184d862ed90db5c3f15, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.71763897
@@ -1325,6 +1329,7 @@ GameObject:
   - component: {fileID: 5525294108244603973}
   - component: {fileID: 5482595810699384231}
   - component: {fileID: 5546335696241584276}
+  - component: {fileID: 5546335696241584277}
   m_Layer: 0
   m_Name: Door
   m_TagString: Interactable
@@ -1344,6 +1349,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8141738c79991384987134f51640eeb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorScript
+--- !u!95 &5546335696241584277
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5546335696241584275}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d2f66bd754527d34493c67b4dc75fcf8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5546398449348030517
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,15 @@ public class RayCastInteractable : MonoBehaviour
         CastRay();
         if (Input.GetMouseButtonDown(0)) 
         {
+            if (currentObject == null) return;
+                
+            IInteractable interactable = currentObject.GetComponent<IInteractable>();
+
+            if (interactable is IInteractable)
+            {
+                interactable.Interact();
+                Debug.Log("interacting");
+            }
         }
     }
 
