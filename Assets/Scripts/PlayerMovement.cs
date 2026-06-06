@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     bool isSneaking = false;
     float cameraSneakOffset = 0.1f;
     CapsuleCollider playerCollider;
+    MenuManagerScript menuManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>(); //znajdowanie komponentu/w³aœciwoœci Rigidbody w obiekcie do którego jest podpiêty skrypt
         cam = Camera.main; //przypisanie g³ównej kamery na scenie (ta w graczu) do zmiennej cam
         playerCollider = GetComponent<CapsuleCollider>();
+        menuManager = FindAnyObjectByType<MenuManagerScript>();
     }
 
     // Update is called once per frame
@@ -85,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
 
     void LookAround() //definicja metody LookAround
     {
+        if (menuManager.isPaused) { return; }
         float mouseX = Input.GetAxis("Mouse X"); // stworzenie zmiennej mouseX i przypisanie wartoœci sczytanej z ruchu myszki w osi X
         float mouseY = Input.GetAxis("Mouse Y"); // stworzenie zmiennej mouseY i przypisanie wartoœci sczytanej z ruchu myszki w osi Y
         //Debug.Log(mouseY); //Wypisanie w konsoli wartoœci zmiennej mouseX
